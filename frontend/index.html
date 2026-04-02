@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chihyeon.ai - 개인 RAG 챗 어시스턴트</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; }
+        .chat-message.user { background-color: #DBEAFE; text-align: right; margin-left: auto; }
+        .chat-message.ai { background-color: #ECFDF5; text-align: left; }
+        .chat-message { padding: 8px 12px; border-radius: 12px; margin-bottom: 8px; max-width: 70%; word-wrap: break-word; }
+        .loader {
+            border: 4px solid #f3f3f3; /* Light grey */
+            border-top: 4px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 2s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+    <div class="bg-white shadow-lg rounded-lg max-w-2xl w-full flex flex-col h-[90vh]">
+        <!-- Header -->
+        <div class="p-4 border-b border-gray-200 bg-blue-600 rounded-t-lg">
+            <h1 class="text-xl font-semibold text-white">개인 RAG 챗 어시스턴트</h1>
+        </div>
+
+        <!-- API Key Input -->
+        <div class="p-4 border-b border-gray-200 bg-blue-50">
+            <label for="googleApiKey" class="block text-sm font-medium text-gray-700">Google AI Studio API Key (Gemini 1.5 Flash)</label>
+            <input type="password" id="googleApiKey" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" placeholder="API 키를 여기에 입력하세요 (예: AIza...) ">
+            <label for="pineconeApiKey" class="block text-sm font-medium text-gray-700 mt-2">Pinecone API Key</label>
+            <input type="password" id="pineconeApiKey" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" placeholder="Pinecone API 키 (예: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)">
+            <label for="pineconeEnv" class="block text-sm font-medium text-gray-700 mt-2">Pinecone Environment (Region)</label>
+            <input type="text" id="pineconeEnv" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" placeholder="Pinecone 환경 (예: us-east-1)">
+            <label for="pineconeIndex" class="block text-sm font-medium text-gray-700 mt-2">Pinecone Index Name</label>
+            <input type="text" id="pineconeIndex" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" placeholder="Pinecone 인덱스 이름 (예: my-rag-index)">
+            <p class="text-xs text-gray-500 mt-2">API 키는 브라우저의 세션 스토리지에 임시 저장되며, 페이지를 닫으면 사라집니다.</p>
+        </div>
+
+        <!-- Chat Messages -->
+        <div id="chatMessages" class="flex-1 p-4 overflow-y-auto space-y-4">
+            <div class="chat-message ai bg-teal-50">
+                안녕하세요! 무엇을 도와드릴까요? 개인 문서에 대해 질문해주세요.
+            </div>
+        </div>
+
+        <!-- User Input -->
+        <div class="p-4 border-t border-gray-200 flex items-center">
+            <input type="text" id="userInput" class="flex-1 p-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="질문을 입력하세요...">
+            <button id="sendButton" class="bg-blue-600 text-white px-4 py-2 rounded-r-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                전송
+            </button>
+        </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
