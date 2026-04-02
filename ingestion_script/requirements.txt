@@ -1,0 +1,9 @@
+langchain
+langchain-community
+langchain-google-genai
+langchain-text-splitters
+langchain-pinecone
+pinecone-client[grpc]
+pypdf
+docx2txt
+python-dotenv
