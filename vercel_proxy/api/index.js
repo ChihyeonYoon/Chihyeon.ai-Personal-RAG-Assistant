@@ -13,7 +13,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { query } = req.body;
+    const { query, history = [] } = req.body;
     if (!query) {
       return res.status(400).json({ error: 'Missing query' });
     }
@@ -28,7 +28,7 @@ export default async function handler(req, res) {
 
     PINECONE_HOST = PINECONE_HOST.replace(/^https?:\/\//, "").replace(/\/$/, "");
 
-    // 1. 임베딩 생성 (gemini-embedding-001)
+    // 1. 임베딩 생성 (gemini-embedding-001) - 사용자의 현재 질문에 대한 임베딩만 검색용으로 생성
     const embedRes = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent?key=${GOOGLE_API_KEY}`,
       {
@@ -69,9 +69,9 @@ export default async function handler(req, res) {
     }
     
     const pineconeData = await pineconeRes.json();
-    const contexts = pineconeData.matches.map(m => m.metadata.text).join('\n\n');
+    const contexts = pineconeData.matches.map(m => m.metadata.text).join('\\n\\n');
 
-    // 3. Gemini 답변 요청 (스트리밍)
+    // 3. Gemini 답변 요청 (스트리밍 + 대화 기록 추가)
     const prompt = `당신은 인공지능 연구원 윤치현님의 비서입니다. 
 제공된 컨텍스트를 바탕으로 사용자의 질문에 친절하게 답변하세요. 
 모르는 내용이라면 지어내지 말고 모른다고 답변하세요.
@@ -82,13 +82,24 @@ export default async function handler(req, res) {
 질문: ${query}
 답변:`;
 
+    // 대화 내역(History)을 Gemini 형식에 맞게 구성
+    const contents = [];
+    for (const msg of history) {
+      contents.push({
+        role: msg.role === 'user' ? 'user' : 'model',
+        parts: [{ text: msg.text }]
+      });
+    }
+    // 현재 질문과 컨텍스트를 마지막 user 요청으로 추가
+    contents.push({ role: "user", parts: [{ text: prompt }] });
+
     const chatRes = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:streamGenerateContent?alt=sse&key=${GOOGLE_API_KEY}`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          contents: [{ role: "user", parts: [{ text: prompt }] }],
+          contents: contents,
           generationConfig: { temperature: 0.1 },
         }),
       }
