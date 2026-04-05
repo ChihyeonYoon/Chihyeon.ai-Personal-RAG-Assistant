@@ -10,3 +10,5 @@ docx2txt
 requests
 beautifulsoup4
 python-dotenv
+llama-parse
+unstructured[md]
