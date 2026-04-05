@@ -8,9 +8,10 @@ Powered by **Gemini 2.5 Flash**, this assistant autonomously cleans documents, g
 
 ## 🚀 Key Features & Architectural Highlights
 
-### 1. Vision-Language Model (VLM) Document Parsing
-- **Flawless OCR via Gemini 2.5 Flash:** Traditional PDF parsers often fail with multi-column layouts, tables, and charts. This system converts every PDF page into a high-resolution image and uses Gemini's vision capabilities to extract text with 100% contextual accuracy.
-- **Visual Data Transcription:** Charts, graphs, and complex tables are not ignored. The VLM explicitly describes visual elements in rich Markdown, ensuring the vector database understands the *meaning* behind the images.
+### 1. High-Fidelity Document Parsing (LlamaParse & Jina Reader)
+- **Flawless PDF Extraction via LlamaParse:** Complex multi-column layouts, mathematical equations, and tables in research papers are perfectly extracted into clean Markdown using the state-of-the-art **LlamaParse API**.
+- **Javascript-Rendered URL Crawling:** Extracts main content from complex web pages (like SPAs or GitHub Pages) flawlessly using the **Jina Reader API**, ignoring irrelevant navigation and footer noise.
+- **Local Markdown Verification:** All parsed and cleaned data is locally saved to the `extracted_md/` directory, allowing developers to review exactly what the AI will read before it gets vectorized.
 
 ### 2. Multi-turn Conversation Support (Context-Aware)
 - **Short-term Memory:** The chat widget maintains a history of the current session.
@@ -18,7 +19,7 @@ Powered by **Gemini 2.5 Flash**, this assistant autonomously cleans documents, g
 
 ### 3. Integrated Web & File Ingestion
 - **Hybrid Data Sources:** Supports local files (`PDF`, `Docx`) and remote web pages via a simple `URLs.txt` list.
-- **AI-Powered Refinement:** Raw text from non-PDF sources is processed by **Gemini 2.5 Flash** to fix layout issues and formatting errors before vectorization.
+- **AI-Powered Refinement:** Raw text from non-PDF sources (Docx, Web) is processed by **Gemini 2.5 Flash** to fix layout issues and formatting errors before vectorization.
 
 ### 4. Smart & Efficient Ingestion
 - **Redundancy Control:** Utilizes MD5 hashing via `processed_files.json` to track the state of both files and URLs.
@@ -38,8 +39,8 @@ Powered by **Gemini 2.5 Flash**, this assistant autonomously cleans documents, g
 
 ```text
 [ Data Pipeline (Local) ]
-1. URLs / DOCX ──> Text Extraction ──> (Cleanup) Gemini 2.5 Flash ──┐
-2. PDFs        ──> Image Conversion ──> (VLM OCR) Gemini 2.5 Flash ─┴─> (Embedding) Gemini-embedding-001 ──> Pinecone DB
+1. URLs (Jina) / DOCX ──> Text Extraction ──> (Cleanup) Gemini 2.5 Flash ──┐
+2. PDFs ──> LlamaParse API ────────────────────────────────────────────────┴─> (Embedding) Gemini-embedding-001 ──> Pinecone DB
 
 [ Service Pipeline (Live) ]
 Visitor (GitHub Pages) ──> Query + Chat History ──> Vercel Secure Proxy ──> (Retrieve) Pinecone ──> (Generate) Gemini 2.5 Flash ──> Streaming Output
