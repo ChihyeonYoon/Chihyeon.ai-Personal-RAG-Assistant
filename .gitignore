@@ -1,6 +1,9 @@
 # Git에 커밋되지 않아야 할 파일 및 디렉토리
 data/          # 개인 문서 파일 (PDF, Word 등)
 .env           # 환경 변수 파일 (API 키 등 민감 정보)
+ingestion_script/.env
+ingestion_script/extracted_md/
+ingestion_script/processed_files.json
 
 # 자동 생성되는 임시 및 데이터 파일
 ingestion_script/extracted_md/
