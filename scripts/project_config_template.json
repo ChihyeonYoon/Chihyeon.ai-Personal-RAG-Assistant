@@ -1,0 +1,22 @@
+{
+    "name": "Project Name",
+    "github_repo_url": "https://github.com/ChihyeonYoon/your-repo-name",
+    "demo_url": "https://chihyeonyoon.github.io/your-repo-name/",
+    "research_code_url": "https://github.com/ChihyeonYoon/optional-research-code-repo",
+    "overview": "A brief one-sentence or two-sentence description of the project's purpose and scope.",
+    "key_features": [
+        "Feature 1: Description of key feature 1",
+        "Feature 2: Description of key feature 2",
+        "Feature 3: Description of key feature 3"
+    ],
+    "achievements": [
+        "Metric/Achievement 1: e.g., Achieved 95% accuracy on test set",
+        "Metric/Achievement 2: e.g., Reduced latency by 50%"
+    ],
+    "tech_stack": [
+        "Technology1",
+        "Technology2",
+        "Technology3"
+    ],
+    "detailed_markdown_path": "../data/optional_detailed_reconstruction_notes.md"
+}

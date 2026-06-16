@@ -1,0 +1,25 @@
+{
+    "name": "LCA CAG 3DGS Reconstruction & Dashboard",
+    "github_repo_url": "https://github.com/ChihyeonYoon/cag-3dgs-dashboard",
+    "demo_url": "https://chihyeonyoon.github.io/cag-3dgs-dashboard/",
+    "research_code_url": "https://github.com/ChihyeonYoon/cag-3dgs-research-code",
+    "overview": "A 3D volumetric reconstruction PoC that combines a 2D Multi-Task Deformable UNet (MT-DUNet) and Beer-Lambert radiative 3D Gaussian Splatting (3DGS) to recover 3D coronary artery structure, radius profile, and volume from sparse 2D C-arm X-ray angiograms.",
+    "key_features": [
+        "Multi-Task Deformable UNet: Integrates deformable convolutions (DCNv2) to adapt to complex vessel tortuosity, simultaneously predicting binary vessel masks and 25 anatomical branch labels.",
+        "Class-Constrained Triangulation: Prevents ghost-point artifacts in epipolar matching by strictly pairing identical anatomical branch labels across views, yielding a 4.5x denser 3D centerline seed.",
+        "Beer-Lambert Radiative 3DGS: Solves the transparency occlusion problem of X-ray projection by analytically integrating density along rays, optimizing vessel radius ($r$) and opacity ($\\alpha$)."
+    ],
+    "achievements": [
+        "Achieved 76.55% Dice on ARCADE test set, significantly outperforming original YOLOv8x baseline (49.00%).",
+        "Achieved 84.96% Mean Projection Dice on 3DGS novel-view projection.",
+        "Memory & Computational Efficiency: Implements point downsampling and multi-resolution rendering, achieving 8x GPU memory saving (2.5 GiB execution) on an L4 GPU."
+    ],
+    "tech_stack": [
+        "PyTorch",
+        "3DGS",
+        "Deformable Convolution (DCNv2)",
+        "Python",
+        "HTML/JS"
+    ],
+    "detailed_markdown_path": "../data/cag_3dgs_reconstruction.md"
+}
