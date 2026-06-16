@@ -1,8 +1,6 @@
 {
     "name": "LCA CAG 3DGS Reconstruction & Dashboard",
-    "github_repo_url": "https://github.com/ChihyeonYoon/cag-3dgs-dashboard",
-    "demo_url": "https://chihyeonyoon.github.io/cag-3dgs-dashboard/",
-    "research_code_url": "https://github.com/ChihyeonYoon/cag-3dgs-research-code",
+    "github_repo_url": "https://chihyeonyoon.github.io/cag-3dgs-dashboard/",
     "overview": "A 3D volumetric reconstruction PoC that combines a 2D Multi-Task Deformable UNet (MT-DUNet) and Beer-Lambert radiative 3D Gaussian Splatting (3DGS) to recover 3D coronary artery structure, radius profile, and volume from sparse 2D C-arm X-ray angiograms.",
     "key_features": [
         "Multi-Task Deformable UNet: Integrates deformable convolutions (DCNv2) to adapt to complex vessel tortuosity, simultaneously predicting binary vessel masks and 25 anatomical branch labels.",
