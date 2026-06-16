@@ -3,6 +3,7 @@
     "github_repo_url": "https://github.com/ChihyeonYoon/your-repo-name",
     "demo_url": "https://chihyeonyoon.github.io/your-repo-name/",
     "research_code_url": "https://github.com/ChihyeonYoon/optional-research-code-repo",
+    "image_filename": "optional_custom_image_name.png_or_gif",
     "overview": "A brief one-sentence or two-sentence description of the project's purpose and scope.",
     "key_features": [
         "Feature 1: Description of key feature 1",

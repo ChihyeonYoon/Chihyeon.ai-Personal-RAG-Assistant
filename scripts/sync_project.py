@@ -19,6 +19,16 @@ def load_config(config_path):
         return json.load(f)
 
 def format_portfolio_entry(config):
+    slug = config['name'].lower().replace(" ", "_").replace("&", "and").replace("-", "_")
+    image_name = config.get("image_filename")
+    if not image_name:
+        # Generate slug and fallback to .png
+        clean_slug = "".join([c if c.isalnum() or c in "_-" else "_" for c in config['name'].lower()])
+        while "__" in clean_slug:
+            clean_slug = clean_slug.replace("__", "_")
+        clean_slug = clean_slug.strip("_")
+        image_name = f"proj_{clean_slug}.png"
+
     title = f"#### [{config['name']}]({config['github_repo_url']})"
     
     links = []
@@ -30,24 +40,38 @@ def format_portfolio_entry(config):
     if links:
         title += " " + " | ".join(links)
         
-    entry = f"{title}\n\n"
-    entry += f"*   **Overview**: {config['overview']}\n"
+    info_content = f"{title}\n"
+    info_content += f"*   **Overview**: {config['overview']}\n"
     
     if config.get("key_features"):
-        entry += "*   **Key Features**:\n"
+        info_content += "*   **Key Features**:\n"
         for feature in config["key_features"]:
-            entry += f"    *   {feature}\n"
+            info_content += f"    *   {feature}\n"
             
     if config.get("achievements"):
-        entry += "*   **Achievements**:\n"
+        info_content += "*   **Achievements**:\n"
         for ach in config["achievements"]:
-            entry += f"    *   {ach}\n"
+            info_content += f"    *   {ach}\n"
             
     tech_str = ", ".join(config["tech_stack"])
-    entry += f"*   **Tech Stack**: {tech_str}.\n"
+    info_content += f"*   **Tech Stack**: {tech_str}.\n"
+
+    # Wrap in HTML two-column container
+    entry = (
+        f'<div class="portfolio-item" style="display: flex; gap: 30px; align-items: center; '
+        f'justify-content: space-between; margin-bottom: 40px; flex-wrap: wrap;">\n'
+        f'<div class="portfolio-info" style="flex: 1.3; min-width: 300px;">\n\n'
+        f'{info_content}\n'
+        f'</div>\n'
+        f'<div class="portfolio-preview" style="flex: 0.7; min-width: 280px; text-align: center;">\n'
+        f'<img src="./images/{image_name}" style="width: 100%; border-radius: 8px; '
+        f'box-shadow: 0 4px 15px rgba(0,0,0,0.3); border: 1px solid #7a7e81;" />\n'
+        f'</div>\n'
+        f'</div>\n'
+    )
     return entry
 
-def update_portfolio_readme(portfolio_readme_path, entry, dry_run=False):
+def update_portfolio_readme(portfolio_readme_path, entry, dry_run=False, project_name=""):
     if not os.path.exists(portfolio_readme_path):
         print(f"Warning: Portfolio README.md not found at {portfolio_readme_path}")
         return False
@@ -62,9 +86,8 @@ def update_portfolio_readme(portfolio_readme_path, entry, dry_run=False):
         return False
         
     # Check if this project is already in the file to avoid duplicates
-    title_marker = entry.split('\n')[0]
-    if title_marker in content:
-        print("Project entry already exists in portfolio README.md. Skipping insertion.")
+    if project_name and f"[{project_name}]" in content:
+        print(f"Project '{project_name}' entry already exists in portfolio README.md. Skipping insertion.")
         return True
         
     # Insert right below the header
@@ -189,7 +212,7 @@ def main():
     # 2. Update Portfolio README.md
     portfolio_readme = os.path.join(args.portfolio_dir, "README.md")
     portfolio_entry = format_portfolio_entry(config)
-    portfolio_updated = update_portfolio_readme(portfolio_readme, portfolio_entry, args.dry_run)
+    portfolio_updated = update_portfolio_readme(portfolio_readme, portfolio_entry, args.dry_run, project_name=config["name"])
     
     # 3. Create/Copy RAG Knowledge File
     rag_data_dir = os.path.join(RAG_DIR, "data")
