@@ -37,6 +37,8 @@ Powered by **Gemini 2.5 Flash**, this assistant autonomously cleans documents, g
 
 ## 🏛️ System Architecture
 
+<p align="center"><img src="Chihyeon.ai_System_Blueprint.png" width="800" alt="Chihyeon.ai System Architecture Blueprint"/></p>
+
 ```text
 [ Data Pipeline (Local) ]
 1. URLs (Jina) / DOCX ──> Text Extraction ──> (Cleanup) Gemini 2.5 Flash ──┐
