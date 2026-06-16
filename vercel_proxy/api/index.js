@@ -111,6 +111,7 @@ ${contexts}
         body: JSON.stringify({
           contents: contents,
           generationConfig: { temperature: 0.1 },
+          tools: [{ googleSearch: {} }]
         }),
       }
     );
